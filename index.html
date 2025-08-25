@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo de Perguntas VR</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aframe-extras/6.1.1/aframe-extras.min.js"></script>
+</head>
+<body>
+    <a-scene id="cena">
+      <a-entity
+        id="camera" camera look-controls position="0 1.6 0">
+        <a-entity
+          cursor="fuse: true"
+          geometry="primitive: ring; radiusInner: 0.01; radiusOuter: 0.02;" 
+          material="color: gold; shader: flat;"
+          position="0 0 -1"
+          raycaster="objects: .raycastable">
+        </a-entity>
+      </a-entity>
+      
+      <!--
+      "LOVECRAFTIAN HORROR" (https://skfb.ly/6sXYD) by alexalbinyana is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+      -->
+      
+      <!--
+      "Tarantula Dance" (https://skfb.ly/pr9uK) by ArachnoBoy is licensed under CC Attribution-NonCommercial-ShareAlike (http://creativecommons.org/licenses/by-nc-sa/4.0/).
+      -->
+      
+      <!--Sound Effect by <a href="https://pixabay.com/pt/users/cjb123-44876692/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=223555">Connor Bragg</a> from <a href="https://pixabay.com/sound-effects//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=223555">Pixabay</a>-->
+      
+      <!-- Sound Effect by <a href="https://pixabay.com/pt/users/daviddumaisaudio-41768500/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=195714">David Dumais</a> from <a href="https://pixabay.com/sound-effects//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=195714">Pixabay</a> -->
+      
+      <!-- Sound Effect by <a href="https://pixabay.com/pt/users/u_v0z5tonc8a-45785922/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=242422">u_v0z5tonc8a</a> from <a href="https://pixabay.com/sound-effects//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=242422">Pixabay</a> -->
+      
+      <!-- Sound Effect by <a href="https://pixabay.com/pt/users/hellfamez-39070051/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=183236">Hell Famez</a> from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=183236">Pixabay</a> -->
+      
+      <!-- Sound Effect by <a href="https://pixabay.com/pt/users/freesound_community-46691455/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=94984">freesound_community</a> from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=94984">Pixabay</a> -->
+      
+      <!-- Cor de fundo -->
+      <a-sky color="#667066"></a-sky>
+      
+      <!-- Luz Ambiente -->
+      <a-light id="luz-ambiente" type="ambient" color="#fff" intensity="0.7"></a-light>
+      
+      <!-- Som da Sala -->
+      <a-sound src="https://cdn.glitch.global/9b3da727-8a5b-4cd4-9dcf-7e484f8615d6/sala-ambience.mp3?v=1731082330230" autoplay="true" loop="true" volume="0.5"></a-sound>
+      
+      <!-- Som do Órgão -->
+      <a-sound id="organ" sound="src: https://cdn.glitch.global/c4b98eb1-37f0-485b-8260-e4b49c77a9a0/spooky-organ.mp3?v=1731506609381; volume: 1;"></a-sound>
+      
+      <!-- Som de Metais -->
+      <a-sound id="metal" sound="src: https://cdn.glitch.global/c4b98eb1-37f0-485b-8260-e4b49c77a9a0/horror-metallic-screeches-183236.mp3?v=1731506599343; volume: 1;"></a-sound>
+      
+      <!-- Chão -->
+      <a-plane
+        id="chao"
+        position="0 0 -1"
+        width="10"
+        height="11"
+        material="src: https://cdn.glitch.global/03fce93d-4bd4-4e69-b719-a203a5ad36a4/chaoreal.png?v=1731349868856"
+        rotation="-90 0 0">
+      </a-plane>
+      
+      <!-- Teto -->
+      <a-plane
+        id="teto"
+        position="0 7 -1"
+        width="10"
+        height="11"
+        material="src: https://cdn.glitch.global/03fce93d-4bd4-4e69-b719-a203a5ad36a4/teto%20arranhado.png?v=1731349851820"
+        rotation="90 0 0">
+      </a-plane>
+      
+      <!-- Paredes -->
+      <a-box
+        width="1"
+        height="8"
+        depth="11"
+        position="-5.5 4 -1"
+        src="https://cdn.glitch.global/af7267a6-a186-4d03-a1b2-128531fdff7f/parede.png?v=1731002346266">
+      </a-box>
+      
+      <a-box
+        width="1"
+        height="8"
+        depth="11"
+        position="5.5 4 -1"
+        src="https://cdn.glitch.global/9b3da727-8a5b-4cd4-9dcf-7e484f8615d6/parede.png?v=1730992004202">
+        
+        <!-- Quadro -->
+        <a-image
+          width="2"
+          height="2.5"
+          position="-0.6 -0.5 0"
+          rotation="0 -90 0"
+          src="https://cdn.glitch.global/03fce93d-4bd4-4e69-b719-a203a5ad36a4/quadro%20assustador.png?v=1731349842393">
+        </a-image>
+      </a-box>
+      
+      <a-box
+        width="10"
+        height="8"
+        depth="1"
+        position="0 4 -7"
+        src="https://cdn.glitch.global/9b3da727-8a5b-4cd4-9dcf-7e484f8615d6/parede.png?v=1730992004202">
+      </a-box>
+      
+      <a-box
+        width="10"
+        height="8"
+        depth="1"
+        position="0 4 4.5"
+        src="https://cdn.glitch.global/9b3da727-8a5b-4cd4-9dcf-7e484f8615d6/parede.png?v=1730992004202">
+      </a-box>
+      
+      <!-- Número -->
+      <a-text
+        id="numeroPergunta"
+        value="1"
+        position="-0.3 4.2 -6.3"
+        color="#DC1C1C"
+        scale="4 4 1"
+        shader="msdf"
+        font="https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/lora/Lora-Regular.json">
+      </a-text>
+      
+      <!-- Porta -->
+      <a-plane
+        class="porta"
+        width="2"
+        height="3.8"
+        color="#fff"
+        position="0 1.95 -6.3"
+        src="https://cdn.glitch.global/af7267a6-a186-4d03-a1b2-128531fdff7f/porta2.png?v=1731002336082">
+      </a-plane>
+      
+      <!-- Fundo Porta -->
+      <a-plane
+        class="fundo"
+        width="2"
+        height="3.8"
+        color="#000"
+        position="0 1.95 -6.4"
+        light="type: point; intensity: 5; distance: 4; decay: 2; color: #DC1C1C">
+      </a-plane>
+      
+      <!-- Grito da Criatura -->
+      <a-entity
+        id="criaturaGrito"
+        sound="src: https://cdn.glitch.global/c4b98eb1-37f0-485b-8260-e4b49c77a9a0/criatura.mp3?v=1731490703525; volume: 5;">
+      </a-entity>
+      
+      <!-- Lâmpada -->
+      <a-sphere
+        id="lampada"
+        radius="0.3"
+        color="#fff"
+        position="0 7 -0.3">
+      </a-sphere>
+      <a-entity light="type: point; intensity: 10; distance: 10; decay: 2; color: #360000" position="0 3 0"></a-entity>
+      
+      <!-- Tela -->
+      <a-box
+        id="tela"
+        width="4.2"
+        height="3"
+        depth="0.5"
+        position="-5 3 -0.5"
+        rotation="0 90 0"
+        color="#333">
+        
+        <a-text
+          id="perguntaTexto"
+          value=""
+          position="0 -0.2 0.3"
+          width="2"
+          wrap-count="15"
+          scale="1.2 1.2 1.2"
+          align="center"
+          shader="msdf"
+          font="https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/anton/Anton-Regular.json">
+        </a-text>
+      </a-box>
+      
+      <!-- Televisão -->
+      <a-image
+          position="-4.7 3 -1"
+          rotation="0 90 0"
+          width="6"
+          height="3"
+          src="https://cdn.glitch.global/03fce93d-4bd4-4e69-b719-a203a5ad36a4/tv%20antiga%20sangue.png?v=1731349844122">
+      </a-image>
+      
+      <!-- Barulho de estática da TV -->
+      <a-entity
+        id="tvStatic"
+        sound="src: https://cdn.glitch.global/c4b98eb1-37f0-485b-8260-e4b49c77a9a0/tv-static.mpeg?v=1731476485935; volume: 5;">
+      </a-entity>
+
+      <!-- Opções de Resposta (Adicionando a classe raycastable) -->
+      <a-image class="opcao raycastable" position="-3 3.5 -6.3" rotation="0 5 0.5" width="3" height="0.5" depth="0.1"
+               src="https://cdn.glitch.global/c4b98eb1-37f0-485b-8260-e4b49c77a9a0/placa.png?v=1731488148230">
+        <a-text value="a)" scale="0.8 0.8 0.8" position="0 -0.15 0.5" align="center"></a-text>
+      </a-image>
+      
+      <a-image class="opcao raycastable" position="-3 2.5 -6.3" rotation="0 5 -1" width="3" height="0.5" depth="0.1"
+             src="https://cdn.glitch.global/c4b98eb1-37f0-485b-8260-e4b49c77a9a0/placa.png?v=1731488148230">
+        <a-text value="b)" scale="0.8 0.8 0.8" position="0 -0.05 0.5" align="center"></a-text>
+      </a-image>
+      
+      <a-image class="opcao raycastable" position="-3 1.5 -6.3" rotation="0 5 -1" width="3" height="0.5" depth="0.1"
+             src="https://cdn.glitch.global/c4b98eb1-37f0-485b-8260-e4b49c77a9a0/placa.png?v=1731488148230">
+        <a-text value="c)" scale="0.8 0.8 0.8" position="0 0 0.5" align="center"></a-text>
+      </a-image>
+      
+      <a-image class="opcao raycastable" position="-3 0.5 -6.3" rotation="0 5 -1" width="3" height="0.5" depth="0.1"
+             src="https://cdn.glitch.global/c4b98eb1-37f0-485b-8260-e4b49c77a9a0/placa.png?v=1731488148230">
+        <a-text value="d)" scale="0.8 0.8 0.8" position="0 0.1 0.5" align="center"></a-text>
+      </a-image>
+      
+      <!-- Aranha -->
+      <a-gltf-model
+        id="aranha"
+        src="https://cdn.glitch.global/c4b98eb1-37f0-485b-8260-e4b49c77a9a0/tarantula_dance.glb?v=1731492702077"
+        scale="1.3 1.3 1.3"
+        position="-3 5.5 -6.6"
+        rotation="90 0 0">
+      </a-gltf-model>
+      <a-entity id="aranhaSound" sound="src: https://cdn.glitch.global/c4b98eb1-37f0-485b-8260-e4b49c77a9a0/aranha-sound.mp3?v=1731495522928; volume: 5;"></a-entity>
+      
+    </a-scene>
+</body>
+  
+  <script>
+    AFRAME.registerComponent("check-position", {
+      tick: function(){
+        const camera = document.querySelector("#camera");
+        let {z} = camera.getAttribute("position");
+        
+        if(z == -7){
+          camera.object3D.position.z = 0;
+          this.el.emit("closeDoor");
+        }
+      }
+    });
+    document.querySelector("#camera").setAttribute("check-position", "");
+  </script>
+  <script src="script.js"></script>
+</html>
