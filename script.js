@@ -290,60 +290,7 @@ function mostrarCriaturaFimDeJogo() {
   }, 3000);
 }
 
-// SALVAR PONTOS
-function saveScores(pontos) {
-  console.log("pontos", pontos);
-
-  let user = localStorage.getItem("userCode");
-
-  fetch(
-    `https://solid-palm-tree-6q6qqgw9grxcrv7x-3000.app.github.dev/users?code=${user}`
-  )
-    .then(async (res) => {
-     return await res.json();
-    })
-    .then((user) => {
-    
-    console.log("user", user)
-    
-      let scoreData = {
-        userId: user[0].id,
-        experienceId: 4,
-        score: pontos
-      };
-    
-    console.log('score', scoreData)
-
-      fetch(
-        `https://solid-palm-tree-6q6qqgw9grxcrv7x-3000.app.github.dev/experienceScores`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(scoreData),
-        }
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          console.log("Dados enviados com sucesso:", data);
-        })
-        .catch((error) => {
-          console.error("Erro ao salvar os dados:", error);
-        });
-    });
-  
-
-  setTimeout(() => {
-    window.location.href =
-      "https://solid-palm-tree-6q6qqgw9grxcrv7x-3000.app.github.dev/pages/auth";
-  }, 10000)
-
-}
-
 function mostrarFimDeJogo() {
-    // Desabilita o cursor
-    camera.querySelector("a-entity[cursor]").setAttribute("visible", "false");
     numeroPergunta.setAttribute("value", "");
 
     // Exibe "FIM DE JOGO" na tela
@@ -362,8 +309,7 @@ function mostrarFimDeJogo() {
     opcao.setAttribute("visible", "false");
   });
     
-    // Travar o jogo, sem mais perguntas ou opções
-    perguntaTexto.setAttribute("value", "FIM DE JOGO");
+  // Travar o jogo, sem mais perguntas ou opções
+  perguntaTexto.setAttribute("value", "FIM DE JOGO");
   
-  saveScores(numero);
 }
