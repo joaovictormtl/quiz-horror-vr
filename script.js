@@ -1,17 +1,3 @@
-// Versão sem jQuery, usando DOMContentLoaded
-document.addEventListener("DOMContentLoaded", function () {
-  // Pega o código da URL atual
-  let userCode = window.location;
-  userCode = userCode.search.replace("?", "");
-  console.log(userCode);
-
-  // Salva no localStorage
-  if (userCode) {
-    localStorage.setItem("userCode", userCode);
-    console.log("Código do usuário salvo:", userCode);
-  }
-});
-
 const porta = document.querySelector(".porta");
 const numeroPergunta = document.querySelector("#numeroPergunta");
 let numero = 1;
@@ -20,15 +6,16 @@ const perguntaTexto = document.querySelector("#perguntaTexto");
 const opcoes = document.querySelectorAll(".opcao");
 const fundo = document.querySelector(".fundo");
 const tela = document.querySelector("#tela");
+const reset = document.createElement("a-text");
 const tvStatic = document.querySelector("#tvStatic");
-const criatura = document.createElement("a-gltf-model");
+//const criatura = document.createElement("a-gltf-model");
 const criaturaGrito = document.querySelector("#criaturaGrito");
 const aranha = document.querySelector("#aranha");
 const aranhaSound = document.querySelector("#aranhaSound");
 const organ = document.querySelector("#organ");
 const metal = document.querySelector("#metal");
 
-function sustoCriatura(){
+/*function sustoCriatura(){
   criatura.setAttribute("visible", "true");
   
   // Anima a criatura para avançar
@@ -39,7 +26,7 @@ function sustoCriatura(){
   });
   
   criaturaGrito.components.sound.playSound();
-}
+}*/
 
 function sustoAranha(){
   aranhaSound.components.sound.playSound();
@@ -56,18 +43,18 @@ function sustoAranha(){
   }, 1000);
 }
 
-function criarCriatura(){
+/*function criarCriatura(){
   criatura.setAttribute("src", "https://cdn.glitch.global/c4b98eb1-37f0-485b-8260-e4b49c77a9a0/lovecraftian_horror.glb?v=1731490174986");
   criatura.setAttribute("position", "0 0 -8.5");
   criatura.setAttribute("scale", "0.1 0.1 0.1");
   criatura.setAttribute("visible", "false");
   document.querySelector("a-scene").appendChild(criatura);
-}
+}*/
 
 window.addEventListener("load", ()=>{
   salvarPerguntasLocalStorage();
   exibirPergunta();
-  criarCriatura();
+  //criarCriatura();
   
   let intervalEscolherOpcao;
   // Torna as opções como selecionáveis
@@ -116,6 +103,12 @@ window.addEventListener("load", ()=>{
   
   fundo.addEventListener("mouseleave", ()=>{
     clearInterval(intervalFundo);
+  });
+
+  let intervalReset;
+  // Reseta o jogo
+  reset.addEventListener("mouseenter", ()=>{
+    console.log("OI");
   });
   
   camera.addEventListener("closeDoor", ()=>{
@@ -167,7 +160,7 @@ function salvarPerguntasLocalStorage(){
     {
       id: "7",
       texto: "Quem foi o primeiro homem a pisar na Lua?",
-      opcoes: ["Buzz Aldrin", "Neil Armstrong", "Yuri Gagarin", "Michael Collins"],
+      opcoes: ["Buzz Aldrin", "Neil Armstrong", "Yuri Gagarin", "Louis Armstrong"],
       correta: "Neil Armstrong"
     },
     {
@@ -202,7 +195,6 @@ function statica(){
   setTimeout(()=>{
     tela.setAttribute("src", "");
     tela.setAttribute("color", "#333");
-    perguntaTexto.setAttribute("visible", "true");
   }, 1000);
 }
 
@@ -212,7 +204,12 @@ function getPergunta(){
 }
 
 function exibirPergunta() {
-  statica();  
+  statica();
+
+  setTimeout(()=>{
+    perguntaTexto.setAttribute("visible", "true");  
+  }, 1000);
+
   let perguntaAtual = getPergunta();
   
   if(!perguntaAtual){
@@ -233,6 +230,10 @@ function exibirPergunta() {
 
 function verificarResposta(opcaoEscolhida) {
   statica();
+
+  setTimeout(()=>{
+    perguntaTexto.setAttribute("visible", "true");
+  }, 1000);
   
   // Tira a possibilidade do jogador escolher outra opção
   opcoes.forEach(opcao=>{
@@ -278,38 +279,50 @@ function avancarPergunta() {
 }
 
 function mostrarCriaturaFimDeJogo() {
-  if(Math.random() < 0.5){
-    sustoCriatura();
-  } else{
-    sustoAranha();
-  }
+  // if(Math.random() < 0.5){
+  //   sustoCriatura();
+  // } else{
+  //   sustoAranha();
+  // }
+  sustoAranha();
     
   setTimeout(()=>{
-    criatura.parentNode.removeChild(criatura);
+    //criatura.parentNode.removeChild(criatura);
     mostrarFimDeJogo(); // Exibe "FIM DE JOGO" após a criatura sumir
   }, 3000);
 }
 
 function mostrarFimDeJogo() {
-    numeroPergunta.setAttribute("value", "");
-
-    // Exibe "FIM DE JOGO" na tela
-    const fimDeJogo = document.createElement("a-text");
-    fimDeJogo.setAttribute("value", "FIM DE JOGO");
-    fimDeJogo.setAttribute("color", "red");
-    fimDeJogo.setAttribute("scale", "10 10 10");
-    fimDeJogo.setAttribute("position", "0 3 -2");
-    fimDeJogo.setAttribute("align", "center");
-    fimDeJogo.setAttribute("rotation", "-90 0 0");
-    document.querySelector("a-scene").appendChild(fimDeJogo);
-    
+  numeroPergunta.setAttribute("value", "");
+  
   // Retirar o raycastable das opcoes
   opcoes.forEach(opcao=>{
     opcao.classList.remove("raycastable");
     opcao.setAttribute("visible", "false");
   });
-    
-  // Travar o jogo, sem mais perguntas ou opções
-  perguntaTexto.setAttribute("value", "FIM DE JOGO");
   
+  statica();
+  setTimeout(()=>{
+    perguntaTexto.setAttribute("visible", "true");
+    perguntaTexto.setAttribute("value", `FIM DE JOGO \n Acertou ${numero-1}!`);
+  }, 1000);
+
+  // Estilizar reset
+  reset.setAttribute("value", "Jogar Novamente");
+  reset.setAttribute("font", "https://raw.githubusercontent.com/etiennepinchon/aframe-fonts/master/fonts/creepster/Creepster-Regular.json");
+  reset.setAttribute("shader", "msdf");
+  reset.setAttribute("position", "0 -0.2 0.4");
+  reset.setAttribute("scale", "1.2 1.2 1.2");
+  reset.setAttribute("align", "center");
+  reset.setAttribute("visible", "false");
+  tela.appendChild(reset);
+
+  // Mostrar opção de reset
+  setTimeout(()=>{
+    statica();
+    perguntaTexto.setAttribute("visible", "false");
+    setTimeout(()=>{
+      reset.setAttribute("visible", "true");
+    }, 1000);
+  }, 3000);
 }
